@@ -1,4 +1,4 @@
-# Jsramver
+# Jsramverk
 
 This project was created during the course Jsramver, autum 2021
 
