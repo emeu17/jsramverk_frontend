@@ -1,46 +1,9 @@
 import logo from './notepad.png';
 import './App.css';
-import "trix/dist/trix";
+import Editor from './Editor';
+import Toolbar from './Toolbar';
 import React, { Component } from 'react';
-import { TrixEditor } from "react-trix";
 
-class Toolbar extends React.Component {
-    handleClick = () => {
-        // when Save-button is clicked, print editors text to console
-        console.log(this.props.editorTxt);
-    }
-    render() {
-        return (
-            <div className="Toolbar">
-                <button className="Save-button" onClick={() => this.handleClick()}> Save </button>
-            </div>
-        )
-    }
-}
-
-class Editor extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-    }
-    handleEditorReady(editor) {
-    // this is a reference back to the editor if you want to
-    // do editing programatically
-        editor.insertString("editor is ready");
-    }
-
-    handleChange(html, text) {
-        this.props.handleChange(html, text);
-    }
-
-    render() {
-        return (
-            <div>
-                <TrixEditor className="Trix" onChange={this.handleChange} onEditorReady={this.handleEditorReady} />
-            </div>
-        );
-    }
-}
 
 class App extends Component {
     //App contains editors text saved as state variable
