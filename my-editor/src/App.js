@@ -1,39 +1,54 @@
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Switch, Link, Route } from 'react-router-dom';
+
 import logo from './notepad.png';
 import './App.css';
 import Editor from './Editor';
 import Toolbar from './Toolbar';
-import React, { Component } from 'react';
-
+import Home from './Home';
 
 class App extends Component {
     //App contains editors text saved as state variable
     constructor(props) {
         super(props);
-        // this.handleChange() = this.handleChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             editorTxt: ""
         };
     }
+
     //handle change of editors text
-    handleChange = (html, text) => {
+    handleChange(html, text) {
       // html is the new html content
       // text is the new text content
-      this.setState(() => ({
-        editorTxt: text,
-      }));
+      this.setState({editorTxt: text});
     }
+
     render() {
         return (
-            <div className="App">
-                <Toolbar editorTxt={this.state.editorTxt}/>
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <p>
-                        My Editor
-                    </p>
-                </header>
-                <Editor editorTxt={this.state.editorTxt} handleChange={this.handleChange}/>
-            </div>
+            <Router>
+                <div className="App">
+                    <Toolbar editorTxt={this.state.editorTxt}/>
+                    <div className="Doc-container">
+                        <Link className="Links" to="/">Home</Link>
+                        <Link className="Links" to ="/editor">Editor</Link>
+                    </div>
+                    <header className="App-header">
+                        <img src={logo} className="App-logo" alt="logo" />
+                        <p>
+                            My Editor
+                        </p>
+                    </header>
+                    <Switch>
+                        <Route path="/editor">
+                            <Editor editorTxt={this.state.editorTxt} handleChange={this.handleChange}/>
+                        </Route>
+                        <Route path="/">
+                            <Home />
+                        </Route>
+                    </Switch>
+                </div>
+            </Router>
         );
     }
 }

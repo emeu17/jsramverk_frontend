@@ -49,3 +49,19 @@
     border-bottom: 2px solid #000;
     background-color: #ccc;
 }
+
+.Doc-container {
+    min-width: 100px;
+    min-height: 100px;
+    background-color: #666;
+}
+
+.Links {
+    color: #76b852;
+    padding: 1em;
+    font-size: 2em;
+}
+
+.Links:hover {
+    color: #ebff84;
+}
