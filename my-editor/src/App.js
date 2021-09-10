@@ -6,6 +6,7 @@ import './App.css';
 import Editor from './Editor';
 import Toolbar from './Toolbar';
 import Home from './Home';
+import List from './List';
 
 class App extends Component {
     //App contains editors text saved as state variable
@@ -32,6 +33,7 @@ class App extends Component {
                     <div className="Doc-container">
                         <Link className="Links" to="/">Home</Link>
                         <Link className="Links" to ="/editor">Editor</Link>
+                        <Link className="Links" to ="/list">List documents</Link>
                     </div>
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo" />
@@ -42,6 +44,9 @@ class App extends Component {
                     <Switch>
                         <Route path="/editor">
                             <Editor editorTxt={this.state.editorTxt} handleChange={this.handleChange}/>
+                        </Route>
+                        <Route path="/list">
+                            <List />
                         </Route>
                         <Route path="/">
                             <Home />
