@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import "trix/dist/trix";
 import { TrixEditor } from "react-trix";
+
 import './Editor.css';
+
 
 class Editor extends Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-    }
-    handleEditorReady(editor) {
-    // this is a reference back to the editor if you want to
-    // do editing programatically
-        editor.insertString("editor is ready");
     }
 
     handleChange(html, text) {
@@ -21,7 +18,8 @@ class Editor extends Component {
     render() {
         return (
             <div>
-                <TrixEditor className="Trix" onChange={this.handleChange} onEditorReady={this.handleEditorReady} />
+                <p>Current doc: { this.props.dataApp.currDocName}</p>
+                <TrixEditor className="Trix" value={this.props.dataApp.editorTxt} onChange={this.handleChange} />
             </div>
         );
     }

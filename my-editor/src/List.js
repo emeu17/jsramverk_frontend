@@ -23,7 +23,7 @@ class List extends Component {
             <div>
                 <h1>List of documents and content</h1>
                 {data.map(doc =>
-                    <div>
+                    <div key={doc._id}>
                         <p><b> {doc.name} </b></p>
                         <p><i> {doc.content} </i></p>
                     </div>

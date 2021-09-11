@@ -7,14 +7,19 @@ import Editor from './Editor';
 import Toolbar from './Toolbar';
 import Home from './Home';
 import List from './List';
+import Temp from './Temp';
 
 class App extends Component {
     //App contains editors text saved as state variable
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.updateDoc = this.updateDoc.bind(this);
         this.state = {
-            editorTxt: ""
+            editorTxt: "<b>Hej</b>",
+            editorHtml: "",
+            currDocName: "Emmas",
+            newDoc: true
         };
     }
 
@@ -22,17 +27,21 @@ class App extends Component {
     handleChange(html, text) {
       // html is the new html content
       // text is the new text content
-      this.setState({editorTxt: text});
+      this.setState({editorTxt: text, editorHtml: html});
+    }
+
+    updateDoc(docName, txt) {
+        this.setState({editorTxt: txt, currDocName: docName});
     }
 
     render() {
         return (
             <Router>
                 <div className="App">
-                    <Toolbar editorTxt={this.state.editorTxt}/>
+                    <Toolbar editorTxt={this.state.editorTxt} currDocName={this.state.currDocName}/>
                     <div className="Doc-container">
                         <Link className="Links" to="/">Home</Link>
-                        <Link className="Links" to ="/editor">Editor</Link>
+                        <Link className="Links" to ="/editor/new">Editor</Link>
                         <Link className="Links" to ="/list">List documents</Link>
                     </div>
                     <header className="App-header">
@@ -43,13 +52,16 @@ class App extends Component {
                     </header>
                     <Switch>
                         <Route path="/editor">
-                            <Editor editorTxt={this.state.editorTxt} handleChange={this.handleChange}/>
+                            <Editor dataApp={this.state} handleChange={this.handleChange}/>
                         </Route>
                         <Route path="/list">
                             <List />
                         </Route>
+                        <Route path="/temp/:id">
+                            <Temp data={this.state}/>
+                        </Route>
                         <Route path="/">
-                            <Home />
+                            <Home doc={this.state} updateDoc={this.updateDoc}/>
                         </Route>
                     </Switch>
                 </div>
