@@ -51,8 +51,7 @@
 }
 
 .Doc-container {
-    min-width: 100px;
-    min-height: 100px;
+    padding: 2em;
     background-color: #666;
 }
 
