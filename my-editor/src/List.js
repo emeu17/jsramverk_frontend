@@ -21,11 +21,10 @@ class List extends Component {
         console.log( {data} );
         return (
             <div>
-                <h1>List of documents and content</h1>
+                <h1>List of documents</h1>
                 {data.map(doc =>
                     <div key={doc._id}>
-                        <p><b> {doc.name} </b></p>
-                        <p><i> {doc.content} </i></p>
+                        <p> {doc.name} </p>
                     </div>
                 )}
             </div>

@@ -29,9 +29,14 @@ class Home extends Component {
     }
 
     newDoc() {
-        // when Save-button is clicked, print editors text to console
+        // when create new document btn is clicked
         console.log("doc name:" + this.state.inputfield);
-        this.updateDoc(this.state.inputfield, "Write here...", true);
+        let docName = this.state.inputfield;
+        if (docName === undefined) {
+            console.log("No document name");
+            docName = "";
+        }
+        this.updateDoc(docName, "Write here...", true);
     }
 
     updateInputValue(evt){

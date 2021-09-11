@@ -16,9 +16,9 @@ class App extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.updateDoc = this.updateDoc.bind(this);
         this.state = {
-            editorTxt: "<b>Hej</b>",
+            editorTxt: "",
             editorHtml: "",
-            currDocName: "Emmas",
+            currDocName: "",
             newDoc: true
         };
     }
@@ -30,18 +30,18 @@ class App extends Component {
       this.setState({editorTxt: text, editorHtml: html});
     }
 
-    updateDoc(docName, txt) {
-        this.setState({editorTxt: txt, currDocName: docName});
+    updateDoc(docName, txt, docNew) {
+        this.setState({editorHtml: txt, currDocName: docName, newDoc: docNew });
     }
 
     render() {
         return (
             <Router>
                 <div className="App">
-                    <Toolbar editorTxt={this.state.editorTxt} currDocName={this.state.currDocName}/>
+                    <Toolbar editorTxt={this.state.editorHtml} currDocName={this.state.currDocName} newDoc={this.state.newDoc} />
                     <div className="Doc-container">
                         <Link className="Links" to="/">Home</Link>
-                        <Link className="Links" to ="/editor/new">Editor</Link>
+                        <Link className="Links" to ="/editor">Editor</Link>
                         <Link className="Links" to ="/list">List documents</Link>
                     </div>
                     <header className="App-header">
