@@ -1,7 +1,9 @@
 import './Toolbar.css';
-
+import { useLocation } from 'react-router-dom';
+// console.log(location.pathname);
 
 const Toolbar = (props) => {
+    const location = useLocation();
     function handleClick() {
         //if no document name has been set, return nothing from function
         if (props.currDocName === ""){
@@ -35,12 +37,18 @@ const Toolbar = (props) => {
             console.log(result);
         });
     }
-
-    return (
-        <div className="Toolbar">
-            <button className="Save-button" onClick={() => handleClick()}> Save </button>
-        </div>
-    );
+    if (location.pathname === "/editor") {
+        return (
+            <div className="Toolbar">
+                <button className="Save-button" onClick={() => handleClick()}> Save </button>
+            </div>
+        );
+    } else {
+        return (
+            <div className="Toolbar">
+            </div>
+        );
+    }
 }
 
 export default Toolbar;

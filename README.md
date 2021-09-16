@@ -1,6 +1,6 @@
 # Jsramverk
 
-This project was created during the course Jsramver, autum 2021
+This project was created during the course Jsramverk, autumn 2021
 
 ## Kmom01
 
