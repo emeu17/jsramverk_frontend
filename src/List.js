@@ -18,7 +18,7 @@ class List extends Component {
 
     render() {
         const { data } = this.state;
-        console.log( {data} );
+        // console.log( {data} );
         return (
             <div>
                 <h1>List of documents</h1>

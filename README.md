@@ -1,3 +1,5 @@
+[![Build Status](https://app.travis-ci.com/emeu17/jsramverk_frontend.svg?branch=main)](https://app.travis-ci.com/emeu17/jsramverk_frontend)
+
 # Jsramverk
 
 This project was created during the course Jsramverk, autumn 2021
@@ -14,7 +16,14 @@ Added router and routes for first page, editor and list of all documents. Connec
 
 # Kmom03
 
-Adding tests using Jest.
+Adding tests using Jest. Three functional tests of use-cases for my application:
+
+1. First page renderes correctly with Welcome-text. Ie the page contains the text "Welcome". *Home.test.js*
+
+2. User should from home page be able to click on a link to go to an overview of all documents (when the link "List documents" is clicked that page should be rendered - check that the text "List of documents" is shown on the page). *App.test.js*
+
+3. When the user is on the /editor-page the "Save"-link should be rendered in the navbar/toolbar. But the save-link should not appear when the user is on the /list-page. *Toolbar.test.js*
+
 
 
 # Getting Started with Create React App

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link }  from "react-router-dom";
+import { Link }  from "react-router-dom";
 
 import './Home.css';
 
@@ -48,26 +48,24 @@ class Home extends Component {
     render() {
         const { data } = this.state;
         return (
-            <Router>
-                <div className="Index-page">
-                    <h1>Welcome</h1>
-                    <form>
-                        <input type="text" id="new" className="Doc-input" onChange={this.updateInputValue} placeholder="Enter name of document"/>
-                        <Link to="/editor" className="New-btn" onClick={() => this.newDoc()}> Create new document </Link>
-                    </form>
-                    <p><u>or update an existing document:</u></p>
-                    {data.map(doc =>
-                        <div key={doc._id}>
-                            <p>
-                            <i>{doc.name}</i>
-                            <Link to="/editor" className="Edit-link" onClick={() => this.updateDoc(doc.name, doc.content, false)}>
-                                &#9998;
-                            </Link>
-                            </p>
-                        </div>
-                    )}
-                </div>
-            </Router>
+            <div className="Index-page">
+                <h1>Welcome</h1>
+                <form>
+                    <input type="text" id="new" className="Doc-input" onChange={this.updateInputValue} placeholder="Enter name of document"/>
+                    <Link to="/editor" className="New-btn" onClick={() => this.newDoc()}> Create new document </Link>
+                </form>
+                <p><u>or update an existing document:</u></p>
+                {data.map(doc =>
+                    <div key={doc._id}>
+                        <p>
+                        <i>{doc.name}</i>
+                        <Link to="/editor" className="Edit-link" onClick={() => this.updateDoc(doc.name, doc.content, false)}>
+                            &#9998;
+                        </Link>
+                        </p>
+                    </div>
+                )}
+            </div>
         )
     }
 }
