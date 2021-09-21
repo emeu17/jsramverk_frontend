@@ -25,9 +25,9 @@ class App extends Component {
 
     //handle change of editors text
     handleChange(html, text) {
-      // html is the new html content
-      // text is the new text content
-      this.setState({editorTxt: text, editorHtml: html});
+        // html is the new html content
+        // text is the new text content
+        this.setState({editorTxt: text, editorHtml: html});
     }
 
     updateDoc(docName, txt, docNew) {
@@ -38,11 +38,16 @@ class App extends Component {
         return (
             <Router>
                 <div className="App">
-                    <Toolbar editorTxt={this.state.editorHtml} currDocName={this.state.currDocName} newDoc={this.state.newDoc} />
+                    <Toolbar
+                        editorTxt={this.state.editorHtml}
+                        currDocName={this.state.currDocName}
+                        newDoc={this.state.newDoc}
+                    />
                     <div className="Doc-container">
                         <Link className="Links" to="/">Home</Link>
                         <Link className="Links" to ="/editor">Editor</Link>
                         <Link className="Links" to ="/list">List documents</Link>
+                        <Link className="Links" to ="/temp">Temp</Link>
                     </div>
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo" />
@@ -57,7 +62,7 @@ class App extends Component {
                         <Route path="/list">
                             <List />
                         </Route>
-                        <Route path="/temp/:id">
+                        <Route path="/temp">
                             <Temp data={this.state}/>
                         </Route>
                         <Route path="/">

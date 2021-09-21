@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './Editor.css';
 
 
-class Temp extends Component {
-    render() {
-        return (
-            <div>
-                <p>Current doc: { this.props.data.currDocName}</p>
-            </div>
-        );
-    }
-}
+const Temp = (props) => {
+    return (
+        <div>
+            <p>Current doc: { props.data.currDocName}</p>
+        </div>
+    );
+};
 
 export default Temp;

@@ -3,21 +3,22 @@ import './Home.css';
 
 class List extends Component {
     constructor(props) {
-      super(props);
+        super(props);
 
-      this.state = {
-        data: [],
-      };
+        this.state = {
+            data: [],
+        };
     }
 
     componentDidMount() {
-      fetch('https://jsramverk-editor-emeu17.azurewebsites.net/list')
-        .then(response => response.json())
-        .then(data => this.setState({ data }));
+        fetch('https://jsramverk-editor-emeu17.azurewebsites.net/list')
+            .then(response => response.json())
+            .then(data => this.setState({ data }));
     }
 
     render() {
         const { data } = this.state;
+
         // console.log( {data} );
         return (
             <div>

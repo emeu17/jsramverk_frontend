@@ -1,13 +1,15 @@
+import React from 'react';
 import './Toolbar.css';
 import { useLocation } from 'react-router-dom';
 // console.log(location.pathname);
 
 const Toolbar = (props) => {
     const location = useLocation();
+
     function handleClick() {
         //if no document name has been set, return nothing from function
-        if (props.currDocName === ""){
-            return
+        if (props.currDocName === "") {
+            return;
         }
         // when Save-button is clicked, print editors text to console
         console.log("Doc name: " + props.currDocName);
@@ -15,6 +17,7 @@ const Toolbar = (props) => {
         console.log("new doc?: " + props.newDoc);
         // console.log(props.editorHtml);
         let requestOptions;
+
         if (props.newDoc) {
             requestOptions = {
                 method: 'POST',
@@ -33,9 +36,9 @@ const Toolbar = (props) => {
             };
         }
         fetch('https://jsramverk-editor-emeu17.azurewebsites.net/docs', requestOptions)
-        .then(function(result) {
-            console.log(result);
-        });
+            .then(function(result) {
+                console.log(result);
+            });
     }
     if (location.pathname === "/editor") {
         return (
@@ -49,6 +52,6 @@ const Toolbar = (props) => {
             </div>
         );
     }
-}
+};
 
 export default Toolbar;

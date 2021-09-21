@@ -1,7 +1,7 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { BrowserRouter as Router, MemoryRouter} from 'react-router-dom';
+import { MemoryRouter} from 'react-router-dom';
 
 import Toolbar from "./Toolbar";
 
@@ -20,17 +20,18 @@ in case the code changes the way location/pathname is fetched.
 
 
 let container = null;
+
 beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
+    // setup a DOM element as a render target
+    container = document.createElement("div");
+    document.body.appendChild(container);
 });
 
 afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
+    // cleanup on exiting
+    unmountComponentAtNode(container);
+    container.remove();
+    container = null;
 });
 
 
@@ -42,13 +43,13 @@ afterEach(() => {
 
 
 it("should contain save-link in editor-page", () => {
-  // Render app
+    // Render app
     act(() => {
         render(
             <MemoryRouter initialEntries={['/editor']}>
-            <Toolbar />
+                <Toolbar />
             </MemoryRouter>,
-        container);
+            container);
     });
 
     // Check correct page content showed up
@@ -56,13 +57,13 @@ it("should contain save-link in editor-page", () => {
 });
 
 it("should not contain save-link in list-page", () => {
-  // Render app
+    // Render app
     act(() => {
         render(
             <MemoryRouter initialEntries={['/list']}>
-            <Toolbar />
+                <Toolbar />
             </MemoryRouter>,
-        container);
+            container);
     });
 
     // Check correct page content showed up

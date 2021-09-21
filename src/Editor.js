@@ -18,13 +18,18 @@ class Editor extends Component {
     render() {
         //if no document name is added yet, show text from if-statement
         let currDoc = this.props.dataApp.currDocName;
+
         if (currDoc === "") {
-            currDoc = "No document selected yet"
+            currDoc = "No document selected yet";
         }
         return (
             <div>
                 <p>Current doc: <i> { currDoc } </i></p>
-                <TrixEditor className="Trix" value={this.props.dataApp.editorHtml} onChange={this.handleChange} />
+                <TrixEditor
+                    className="Trix"
+                    value={this.props.dataApp.editorHtml}
+                    onChange={this.handleChange}
+                />
             </div>
         );
     }
