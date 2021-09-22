@@ -9,6 +9,11 @@ import Home from './Home';
 import List from './List';
 import Temp from './Temp';
 
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:1337";
+
+const socket = socketIOClient(ENDPOINT);
+
 class App extends Component {
     //App contains editors text saved as state variable
     constructor(props) {
@@ -23,11 +28,19 @@ class App extends Component {
         };
     }
 
+    // componentDidMount() {
+    //     console.log("Test");
+    //     socket.on("connection", data => {
+    //         console.log("connected!" + data);
+    //     });
+    // }
+
     //handle change of editors text
     handleChange(html, text) {
         // html is the new html content
         // text is the new text content
         this.setState({editorTxt: text, editorHtml: html});
+        socket.emit('client-event', html);
     }
 
     updateDoc(docName, txt, docNew) {
