@@ -24,13 +24,13 @@ class App extends Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.updateDoc = this.updateDoc.bind(this);
+        this.updateId = this.updateId.bind(this);
         // socket.connect();
         this.socket = socketIOClient(ENDPOINT);
         this.state = {
             editorTxt: "",
             editorHtml: "",
             currDocName: "",
-            newDoc: true,
             docId: ""
         };
     }
@@ -71,6 +71,10 @@ class App extends Component {
         // console.log("retrieved data, content updated: " + txt);
     }
 
+    updateId(newId) {
+        this.setState({docId: newId});
+    }
+
 
     // componentWillUnmount() {
     //     socket.off("doc");
@@ -103,6 +107,7 @@ class App extends Component {
                                 dataApp={this.state}
                                 appSocket={this.socket}
                                 handleChange={this.handleChange}
+                                updateId={this.updateId}
                             />
                         </Route>
                         <Route path="/list">

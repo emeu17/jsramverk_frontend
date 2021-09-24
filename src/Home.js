@@ -15,29 +15,30 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        fetch('https://jsramverk-editor-emeu17.azurewebsites.net/list')
+        // fetch('http://localhost:1337/docs')
+        fetch('https://jsramverk-editor-emeu17.azurewebsites.net/docs')
             .then(response => response.json())
             .then(data => this.setState({ data }));
     }
 
-    updateDoc(docId, doc, cont, newDoc) {
+    updateDoc(docId, doc, cont) {
         // when update is clicked
-        console.log("doc:" + doc, ", cont: " + cont);
+        // console.log("doc:" + doc, ", cont: " + cont);
         //update document name and content
-        this.props.updateDoc(docId, doc, cont, newDoc);
+        this.props.updateDoc(docId, doc, cont);
         // console.log(this.props.editorHtml);
     }
 
     newDoc() {
         // when create new document btn is clicked
-        console.log("doc name:" + this.state.inputfield);
+        // console.log("doc name:" + this.state.inputfield);
         let docName = this.state.inputfield;
 
         if (docName === undefined) {
             console.log("No document name");
             docName = "";
         }
-        this.updateDoc(docName, "Write here...", true);
+        this.updateDoc("no-id", docName, "Write here...");
     }
 
     updateInputValue(evt) {
@@ -71,7 +72,7 @@ class Home extends Component {
                                 to="/editor"
                                 className="Edit-link"
                                 onClick={() =>
-                                    this.updateDoc(doc._id, doc.name, doc.content, false)}>
+                                    this.updateDoc(doc._id, doc.name, doc.content)}>
                                     &#9998;
                             </Link>
                         </p>

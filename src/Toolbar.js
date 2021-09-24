@@ -12,30 +12,18 @@ const Toolbar = (props) => {
             return;
         }
         // when Save-button is clicked, print editors text to console
-        console.log("Doc name: " + props.currDocName);
-        console.log(props.editorTxt);
-        console.log("new doc?: " + props.newDoc);
-        // console.log(props.editorHtml);
-        let requestOptions;
+        // console.log("Doc name: " + props.currDocName);
+        // console.log(props.editorTxt);
+        let requestOptions = {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8' // Indicates the content
+            },
+            body: JSON.stringify({ name: props.currDocName, content: props.editorTxt })
+        };
 
-        if (props.newDoc) {
-            requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8' // Indicates the content
-                },
-                body: JSON.stringify({ name: props.currDocName, content: props.editorTxt })
-            };
-        } else {
-            requestOptions = {
-                method: 'PUT',
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8' // Indicates the content
-                },
-                body: JSON.stringify({ name: props.currDocName, content: props.editorTxt })
-            };
-        }
-        fetch('https://jsramverk-editor-emeu17.azurewebsites.net/docs', requestOptions)
+        // fetch('http://localhost:1337/docs', requestOptions)
+        fetch('https://jsramverk-editor-emeu17.azurewebsites.net/list', requestOptions)
             .then(function(result) {
                 console.log(result);
             });
