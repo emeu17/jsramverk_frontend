@@ -11,19 +11,19 @@ const Toolbar = (props) => {
         if (props.currDocName === "") {
             return;
         }
-        // when Save-button is clicked, print editors text to console
-        // console.log("Doc name: " + props.currDocName);
-        // console.log(props.editorTxt);
+        // when Save-button is clicked, update doc in mongodb
+        // console.log("id: " + props.docId);
+        // console.log("new text: " + props.editorTxt);
         let requestOptions = {
             method: 'PUT',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content
             },
-            body: JSON.stringify({ name: props.currDocName, content: props.editorTxt })
+            body: JSON.stringify({ _id: props.docId, content: props.editorTxt })
         };
 
         // fetch('http://localhost:1337/docs', requestOptions)
-        fetch('https://jsramverk-editor-emeu17.azurewebsites.net/list', requestOptions)
+        fetch('https://jsramverk-editor-emeu17.azurewebsites.net/docs', requestOptions)
             .then(function(result) {
                 console.log(result);
             });

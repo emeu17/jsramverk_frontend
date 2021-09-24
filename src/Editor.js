@@ -11,6 +11,7 @@ class Editor extends Component {
         // this.mytext = this.props.dataApp.editorHtml;
         this.handleChange = this.handleChange.bind(this);
         this.updateId = this.updateId.bind(this);
+        this.setEditorContent = this.setEditorContent.bind(this);
     }
 
     handleChange(html, text) {
@@ -43,23 +44,31 @@ class Editor extends Component {
         this.props.appSocket.on("doc", (data) => {
             // console.log("inside doc: " + data.html);
             this.updateEditor(data.html);
+            this.setEditorContent(data.html);
         });
     }
 
-    componentDidUpdate(prevProps) {
-        //update editor with new value
-        if (this.props.dataApp != prevProps.dataApp) {
-            // document.getElementById("myForm").reset();
-            // console.log("yes! data: " + this.props.dataApp.editorHtml);
-            this.updateEditor(this.props.dataApp.editorHtml);
-        }
+    setEditorContent(txt) {
+        this.props.setEditorContent(txt);
     }
+
+    // componentDidUpdate(prevProps) {
+    //     //update editor with new value
+    //     if (this.props.dataApp != prevProps.dataApp) {
+    //         // document.getElementById("myForm").reset();
+    //         // console.log("yes! data: " + this.props.dataApp.editorHtml);
+    //         this.updateEditor(this.props.dataApp.editorHtml);
+    //     }
+    // }
 
     updateId(newId) {
         console.log("adding new Id: " + newId);
         this.props.updateId(newId);
     }
 
+    //apparently the trix api is "a little clunky"
+    //https://github.com/basecamp/trix/issues/138
+    //so need to update its value when text changes
     updateEditor(upTxt) {
         var element = document.querySelector("trix-editor");
         var editor = element.editor;
@@ -72,12 +81,12 @@ class Editor extends Component {
         editor.setSelectedRange(position);
     }
 
-    // filter = memoize(
-    //   (htmlTxt) => list.filter(item => item.text.includes(filterText))
-    // );
+    //leave room when changing view
+    componentWillUnmount() {
+        this.props.appSocket.emit("leave", this.props.dataApp.docId);
+    }
 
     render() {
-        // const htmlTxt = this.filter(this.props.dataApp);
         //if no document name is added yet, show text from if-statement
         let currDoc = this.props.dataApp.currDocName;
 

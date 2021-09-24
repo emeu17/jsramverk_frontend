@@ -7,16 +7,12 @@ import Editor from './Editor';
 import Toolbar from './Toolbar';
 import Home from './Home';
 import List from './List';
-import Temp from './Temp';
 
 import socketIOClient from "socket.io-client";
 // import io from "socket.io-client";
 // import socketio from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:1337";
-
-// const socket = io.connect(ENDPOINT);
-// const socket = socketIOClient(ENDPOINT);
-// const socket = socketio.connect(ENDPOINT);
+// const ENDPOINT = "http://127.0.0.1:1337";
+const ENDPOINT = "https://jsramverk-editor-emeu17.azurewebsites.net/";
 
 class App extends Component {
     //App contains editors text saved as state variable
@@ -25,24 +21,25 @@ class App extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.updateDoc = this.updateDoc.bind(this);
         this.updateId = this.updateId.bind(this);
+        this.setEditorContent = this.setEditorContent.bind(this);
         // socket.connect();
         this.socket = socketIOClient(ENDPOINT);
         this.state = {
             editorTxt: "",
             editorHtml: "",
             currDocName: "",
-            docId: ""
+            docId: "",
         };
     }
 
-    componentDidMount() {
-        // console.log("inside mount");
-
-        this.socket.on("doc", (data) => {
-            // console.log("inside doc: " + data.html);
-            this.setEditorContent(data.html);
-        });
-    }
+    // componentDidMount() {
+    //     console.log("inside mount, url: " + window.location.href);
+    //
+    //     // this.socket.on("doc", (data) => {
+    //     //     // console.log("inside doc: " + data.html);
+    //     //     this.setEditorContent(data.html);
+    //     // });
+    // }
 
     //handle change of editors text
     handleChange(html, text) {
@@ -61,12 +58,15 @@ class App extends Component {
         // console.log("doc id: " + this.state.docId);
     }
 
-    updateDoc(idDoc, docName, txt, docNew) {
-        this.setState({docId: idDoc, editorHtml: txt, currDocName: docName, newDoc: docNew });
-        // console.log("Doc id: " + idDoc);
+    updateDoc(idDoc, docName, txt) {
+        this.setState({docId: idDoc, editorHtml: txt, currDocName: docName});
+        // console.log("Doc id: " + this.state.docId);
+        // console.log("name: " + this.state.currDocName);
+        // console.log("txt: " + this.state.editorHtml);
     }
 
     setEditorContent(txt) {
+        // console.log("inside set Editor Content");
         this.setState({editorHtml: txt });
         // console.log("retrieved data, content updated: " + txt);
     }
@@ -75,11 +75,6 @@ class App extends Component {
         this.setState({docId: newId});
     }
 
-
-    // componentWillUnmount() {
-    //     socket.off("doc");
-    // }
-
     render() {
         return (
             <Router>
@@ -87,13 +82,12 @@ class App extends Component {
                     <Toolbar
                         editorTxt={this.state.editorHtml}
                         currDocName={this.state.currDocName}
-                        newDoc={this.state.newDoc}
+                        docId={this.state.docId}
                     />
                     <div className="Doc-container">
                         <Link className="Links" to="/">Home</Link>
                         <Link className="Links" to ="/editor">Editor</Link>
                         <Link className="Links" to ="/list">List documents</Link>
-                        <Link className="Links" to ="/temp">Temp</Link>
                     </div>
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo" />
@@ -108,13 +102,11 @@ class App extends Component {
                                 appSocket={this.socket}
                                 handleChange={this.handleChange}
                                 updateId={this.updateId}
+                                setEditorContent={this.setEditorContent}
                             />
                         </Route>
                         <Route path="/list">
                             <List />
-                        </Route>
-                        <Route path="/temp">
-                            <Temp data={this.state}/>
                         </Route>
                         <Route path="/">
                             <Home doc={this.state} updateDoc={this.updateDoc}/>

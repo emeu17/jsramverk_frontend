@@ -22,11 +22,9 @@ class Home extends Component {
     }
 
     updateDoc(docId, doc, cont) {
-        // when update is clicked
         // console.log("doc:" + doc, ", cont: " + cont);
-        //update document name and content
+        //update document id, name and content
         this.props.updateDoc(docId, doc, cont);
-        // console.log(this.props.editorHtml);
     }
 
     newDoc() {
