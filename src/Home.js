@@ -20,11 +20,11 @@ class Home extends Component {
             .then(data => this.setState({ data }));
     }
 
-    updateDoc(doc, cont, newDoc) {
+    updateDoc(docId, doc, cont, newDoc) {
         // when update is clicked
         console.log("doc:" + doc, ", cont: " + cont);
         //update document name and content
-        this.props.updateDoc(doc, cont, newDoc);
+        this.props.updateDoc(docId, doc, cont, newDoc);
         // console.log(this.props.editorHtml);
     }
 
@@ -70,7 +70,8 @@ class Home extends Component {
                             <Link
                                 to="/editor"
                                 className="Edit-link"
-                                onClick={() => this.updateDoc(doc.name, doc.content, false)}>
+                                onClick={() =>
+                                    this.updateDoc(doc._id, doc.name, doc.content, false)}>
                                     &#9998;
                             </Link>
                         </p>

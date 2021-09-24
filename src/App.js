@@ -10,9 +10,13 @@ import List from './List';
 import Temp from './Temp';
 
 import socketIOClient from "socket.io-client";
+// import io from "socket.io-client";
+// import socketio from "socket.io-client";
 const ENDPOINT = "http://127.0.0.1:1337";
 
-const socket = socketIOClient(ENDPOINT);
+// const socket = io.connect(ENDPOINT);
+// const socket = socketIOClient(ENDPOINT);
+// const socket = socketio.connect(ENDPOINT);
 
 class App extends Component {
     //App contains editors text saved as state variable
@@ -20,32 +24,57 @@ class App extends Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.updateDoc = this.updateDoc.bind(this);
+        // socket.connect();
+        this.socket = socketIOClient(ENDPOINT);
         this.state = {
             editorTxt: "",
             editorHtml: "",
             currDocName: "",
-            newDoc: true
+            newDoc: true,
+            docId: ""
         };
     }
 
-    // componentDidMount() {
-    //     console.log("Test");
-    //     socket.on("connection", data => {
-    //         console.log("connected!" + data);
-    //     });
-    // }
+    componentDidMount() {
+        // console.log("inside mount");
+
+        this.socket.on("doc", (data) => {
+            // console.log("inside doc: " + data.html);
+            this.setEditorContent(data.html);
+        });
+    }
 
     //handle change of editors text
     handleChange(html, text) {
         // html is the new html content
         // text is the new text content
         this.setState({editorTxt: text, editorHtml: html});
-        socket.emit('client-event', html);
+        //emit html content of doc + document Id
+        let data = {
+            _id: this.state.docId,
+            html: html
+        };
+
+        this.socket.emit("create", data._id);
+        // console.log("created room: " + data._id);
+        this.socket.emit('doc', data);
+        // console.log("doc id: " + this.state.docId);
     }
 
-    updateDoc(docName, txt, docNew) {
-        this.setState({editorHtml: txt, currDocName: docName, newDoc: docNew });
+    updateDoc(idDoc, docName, txt, docNew) {
+        this.setState({docId: idDoc, editorHtml: txt, currDocName: docName, newDoc: docNew });
+        // console.log("Doc id: " + idDoc);
     }
+
+    setEditorContent(txt) {
+        this.setState({editorHtml: txt });
+        // console.log("retrieved data, content updated: " + txt);
+    }
+
+
+    // componentWillUnmount() {
+    //     socket.off("doc");
+    // }
 
     render() {
         return (
@@ -70,7 +99,11 @@ class App extends Component {
                     </header>
                     <Switch>
                         <Route path="/editor">
-                            <Editor dataApp={this.state} handleChange={this.handleChange}/>
+                            <Editor
+                                dataApp={this.state}
+                                appSocket={this.socket}
+                                handleChange={this.handleChange}
+                            />
                         </Route>
                         <Route path="/list">
                             <List />
