@@ -20,7 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --detectOpenHandles",
+    "test": "react-scripts test --watch --runInBand --detectOpenHandles",
     "eject": "react-scripts eject",
     "deploy": "npm run build && rsync -av --delete build/ emeu17@ssh.student.bth.se:www/editor",
     "deploy-build": "npm run build && rsync --chmod=a+rwx -av --delete build/ emeu17@ssh.student.bth.se:www/editor",
