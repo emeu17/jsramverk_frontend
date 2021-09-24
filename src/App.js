@@ -32,15 +32,6 @@ class App extends Component {
         };
     }
 
-    // componentDidMount() {
-    //     console.log("inside mount, url: " + window.location.href);
-    //
-    //     // this.socket.on("doc", (data) => {
-    //     //     // console.log("inside doc: " + data.html);
-    //     //     this.setEditorContent(data.html);
-    //     // });
-    // }
-
     //handle change of editors text
     handleChange(html, text) {
         // html is the new html content
@@ -60,13 +51,9 @@ class App extends Component {
 
     updateDoc(idDoc, docName, txt) {
         this.setState({docId: idDoc, editorHtml: txt, currDocName: docName});
-        // console.log("Doc id: " + this.state.docId);
-        // console.log("name: " + this.state.currDocName);
-        // console.log("txt: " + this.state.editorHtml);
     }
 
     setEditorContent(txt) {
-        // console.log("inside set Editor Content");
         this.setState({editorHtml: txt });
         // console.log("retrieved data, content updated: " + txt);
     }
