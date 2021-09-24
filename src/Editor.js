@@ -21,6 +21,11 @@ class Editor extends Component {
     componentDidMount() {
         //if new doc, save it right away and set id to new id
         if (this.props.dataApp.docId === "no-id") {
+            //if no document name has been set, return nothing from function
+            if (this.props.dataApp.currDocName === "") {
+                console.log("no document name specified, will not save");
+                return;
+            }
             // console.log("no id yet");
             let requestOptions = {
                 method: 'POST',

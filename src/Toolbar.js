@@ -7,13 +7,14 @@ const Toolbar = (props) => {
     const location = useLocation();
 
     function handleClick() {
-        //if no document name has been set, return nothing from function
-        if (props.currDocName === "") {
-            return;
-        }
         // when Save-button is clicked, update doc in mongodb
         // console.log("id: " + props.docId);
         // console.log("new text: " + props.editorTxt);
+        if (props.currDocName === "") {
+            console.log("no document name specified, will not save");
+            return;
+        }
+
         let requestOptions = {
             method: 'PUT',
             headers: {

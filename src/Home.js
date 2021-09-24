@@ -22,8 +22,9 @@ class Home extends Component {
     }
 
     updateDoc(docId, doc, cont) {
+        // when update is clicked
         // console.log("doc:" + doc, ", cont: " + cont);
-        //update document id, name and content
+        //update document name and content
         this.props.updateDoc(docId, doc, cont);
     }
 
@@ -43,6 +44,10 @@ class Home extends Component {
         //console.log("input field updated with "+evt.target.value);
         this.setState({inputfield: evt.target.value});
     }
+
+    // componentWillUnmount() {
+    //   this.isSubscribed = false;
+    // }
 
     render() {
         const { data } = this.state;
