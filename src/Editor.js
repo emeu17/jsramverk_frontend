@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import "trix/dist/trix";
-import { TrixEditor } from "react-trix";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 import './Editor.css';
 // import memoize from "memoize-one";
@@ -48,7 +48,7 @@ class Editor extends Component {
 
         this.props.appSocket.on("doc", (data) => {
             // console.log("inside doc: " + data.html);
-            this.updateEditor(data.html);
+            // this.updateEditor(data.html);
             this.setEditorContent(data.html);
         });
     }
@@ -57,14 +57,6 @@ class Editor extends Component {
         this.props.setEditorContent(txt);
     }
 
-    // componentDidUpdate(prevProps) {
-    //     //update editor with new value
-    //     if (this.props.dataApp != prevProps.dataApp) {
-    //         // document.getElementById("myForm").reset();
-    //         // console.log("yes! data: " + this.props.dataApp.editorHtml);
-    //         this.updateEditor(this.props.dataApp.editorHtml);
-    //     }
-    // }
 
     updateId(newId) {
         console.log("adding new Id: " + newId);
@@ -101,8 +93,8 @@ class Editor extends Component {
         return (
             <div>
                 <p>Current doc: <i> { currDoc } </i></p>
-                <TrixEditor
-                    className="Trix"
+                <ReactQuill
+                    theme="snow"
                     value={this.props.dataApp.editorHtml}
                     onChange={this.handleChange}
                 />
