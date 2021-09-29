@@ -9,14 +9,28 @@ class Editor extends Component {
     constructor(props) {
         super(props);
         // this.mytext = this.props.dataApp.editorHtml;
+        this.quillRef = null;
+        this.reactQuillRef = null;
         this.handleChange = this.handleChange.bind(this);
+        this.socketUpdate = this.socketUpdate.bind(this);
         this.updateId = this.updateId.bind(this);
         this.setEditorContent = this.setEditorContent.bind(this);
     }
 
-    handleChange(html, text) {
-        this.props.handleChange(html, text);
+    handleChange(html) {
+        this.props.handleChange(html);
     }
+
+    socketUpdate() {
+        let data = {
+            _id: this.props.dataApp.docId,
+            html: this.props.dataApp.editorHtml
+        };
+
+        // console.log("created room: " + data._id);
+        this.props.appSocket.emit('doc', data);
+    }
+
 
     componentDidMount() {
         //if new doc, save it right away and set id to new id
@@ -63,21 +77,6 @@ class Editor extends Component {
         this.props.updateId(newId);
     }
 
-    //apparently the trix api is "a little clunky"
-    //https://github.com/basecamp/trix/issues/138
-    //so need to update its value when text changes
-    updateEditor(upTxt) {
-        var element = document.querySelector("trix-editor");
-        var editor = element.editor;
-
-        //get current position in document
-        var position = editor.getPosition();
-
-        element.value = upTxt;
-        //reset back to position instead of first in doc
-        editor.setSelectedRange(position);
-    }
-
     //leave room when changing view
     componentWillUnmount() {
         this.props.appSocket.emit("leave", this.props.dataApp.docId);
@@ -97,6 +96,7 @@ class Editor extends Component {
                     theme="snow"
                     value={this.props.dataApp.editorHtml}
                     onChange={this.handleChange}
+                    onKeyUp={this.socketUpdate}
                 />
             </div>
         );

@@ -25,7 +25,6 @@ class App extends Component {
         // socket.connect();
         this.socket = socketIOClient(ENDPOINT);
         this.state = {
-            editorTxt: "",
             editorHtml: "",
             currDocName: "",
             docId: "",
@@ -33,20 +32,9 @@ class App extends Component {
     }
 
     //handle change of editors text
-    handleChange(html, text) {
+    handleChange(html) {
         // html is the new html content
-        // text is the new text content
-        this.setState({editorTxt: text, editorHtml: html});
-        //emit html content of doc + document Id
-        let data = {
-            _id: this.state.docId,
-            html: html
-        };
-
-        this.socket.emit("create", data._id);
-        // console.log("created room: " + data._id);
-        this.socket.emit('doc', data);
-        // console.log("doc id: " + this.state.docId);
+        this.setState({editorHtml: html});
     }
 
     updateDoc(idDoc, docName, txt) {
