@@ -3,7 +3,8 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 import './Editor.css';
-// import memoize from "memoize-one";
+
+import { baseUrl} from "./vars.js";
 
 class Editor extends Component {
     constructor(props) {
@@ -53,7 +54,7 @@ class Editor extends Component {
             };
 
             // fetch('http://localhost:1337/docs', requestOptions)
-            fetch('https://jsramverk-editor-emeu17.azurewebsites.net/docs', requestOptions)
+            fetch(`${baseUrl}/docs`, requestOptions)
                 .then(response => response.json())
                 .then(data => this.updateId(data.data.msg));
         }

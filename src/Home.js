@@ -2,28 +2,33 @@ import React, { Component } from 'react';
 import { Link }  from "react-router-dom";
 
 import './Home.css';
+import { baseUrl} from "./vars.js";
+
+import Login from './Login';
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.updateDoc = this.updateDoc.bind(this);
         this.newDoc = this.newDoc.bind(this);
+        // this.setToken = this.setToken.bind(this);
         this.updateInputValue = this.updateInputValue.bind(this);
+        this.login = false;
         this.state = {
             data: []
         };
     }
 
     componentDidMount() {
-        // fetch('http://localhost:1337/docs')
-        fetch('https://jsramverk-editor-emeu17.azurewebsites.net/docs')
+        // console.log("token: " + this.props.doc.token);
+        fetch(`${baseUrl}/docs`)
             .then(response => response.json())
-            .then(data => this.setState({ data }));
+            .then(data => {
+                this.setState({ data });
+            });
     }
 
     updateDoc(docId, doc, cont) {
-        // when update is clicked
-        // console.log("doc:" + doc, ", cont: " + cont);
         //update document name and content
         this.props.updateDoc(docId, doc, cont);
     }
@@ -52,37 +57,41 @@ class Home extends Component {
     render() {
         const { data } = this.state;
 
-        return (
-            <div className="Index-page">
-                <h1>Welcome</h1>
-                <form>
-                    <input
-                        type="text" id="new"
-                        className="Doc-input"
-                        onChange={this.updateInputValue}
-                        placeholder="Enter name of document"
-                    />
-                    <Link to="/editor" className="New-btn" onClick={() => this.newDoc()}>
-                        Create new document
-                    </Link>
-                </form>
-                <p><u>or update an existing document:</u></p>
-                {data.map(doc =>
-                    <div key={doc._id}>
-                        <p>
-                            <i>{doc.name}</i>
-                            <Link
-                                to="/editor"
-                                className="Edit-link"
-                                onClick={() =>
-                                    this.updateDoc(doc._id, doc.name, doc.content)}>
-                                    &#9998;
-                            </Link>
-                        </p>
-                    </div>
-                )}
-            </div>
-        );
+        if (! data.errors) {
+            return (
+                <div className="Index-page">
+                    <h1>Welcome</h1>
+                    <form>
+                        <input
+                            type="text" id="new"
+                            className="Doc-input"
+                            onChange={this.updateInputValue}
+                            placeholder="Enter name of document"
+                        />
+                        <Link to="/editor" className="New-btn" onClick={() => this.newDoc()}>
+                            Create new document
+                        </Link>
+                    </form>
+                    <p><u>or update an existing document:</u></p>
+                    {data.map(doc =>
+                        <div key={doc._id}>
+                            <p>
+                                <i>{doc.name}</i>
+                                <Link
+                                    to="/editor"
+                                    className="Edit-link"
+                                    onClick={() =>
+                                        this.updateDoc(doc._id, doc.name, doc.content)}>
+                                        &#9998;
+                                </Link>
+                            </p>
+                        </div>
+                    )}
+                </div>
+            );
+        } else {
+            return <Login myData={this.state} setToken={this.props.setToken} />;
+        }
     }
 }
 

@@ -13,8 +13,8 @@ import Login from './Login';
 import socketIOClient from "socket.io-client";
 // import io from "socket.io-client";
 // import socketio from "socket.io-client";
-// const ENDPOINT = "http://127.0.0.1:1337";
-const ENDPOINT = "https://jsramverk-editor-emeu17.azurewebsites.net/";
+const ENDPOINT = "http://127.0.0.1:1337";
+// const ENDPOINT = "https://jsramverk-editor-emeu17.azurewebsites.net/";
 
 class App extends Component {
     //App contains editors text saved as state variable
@@ -23,6 +23,7 @@ class App extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.updateDoc = this.updateDoc.bind(this);
         this.updateId = this.updateId.bind(this);
+        this.setToken = this.setToken.bind(this);
         this.setEditorContent = this.setEditorContent.bind(this);
         // socket.connect();
         this.socket = socketIOClient(ENDPOINT);
@@ -30,6 +31,7 @@ class App extends Component {
             editorHtml: "",
             currDocName: "",
             docId: "",
+            token: ""
         };
     }
 
@@ -50,6 +52,10 @@ class App extends Component {
 
     updateId(newId) {
         this.setState({docId: newId});
+    }
+
+    setToken(newToken) {
+        this.setState({token: newToken});
     }
 
     render() {
@@ -92,7 +98,11 @@ class App extends Component {
                             <Login />
                         </Route>
                         <Route path="/">
-                            <Home doc={this.state} updateDoc={this.updateDoc}/>
+                            <Home
+                                doc={this.state}
+                                updateDoc={this.updateDoc}
+                                setToken={this.setToken}
+                            />
                         </Route>
                     </Switch>
                 </div>

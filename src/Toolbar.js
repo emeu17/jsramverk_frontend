@@ -3,6 +3,8 @@ import './Toolbar.css';
 import { useLocation } from 'react-router-dom';
 // console.log(location.pathname);
 
+import { baseUrl} from "./vars.js";
+
 const Toolbar = (props) => {
     const location = useLocation();
 
@@ -24,7 +26,7 @@ const Toolbar = (props) => {
         };
 
         // fetch('http://localhost:1337/docs', requestOptions)
-        fetch('https://jsramverk-editor-emeu17.azurewebsites.net/docs', requestOptions)
+        fetch(`${baseUrl}/docs`, requestOptions)
             .then(function(result) {
                 console.log(result);
             });
