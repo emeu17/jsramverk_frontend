@@ -7,6 +7,8 @@ import Editor from './Editor';
 import Toolbar from './Toolbar';
 import Home from './Home';
 import List from './List';
+import Register from './Register';
+import Login from './Login';
 
 import socketIOClient from "socket.io-client";
 // import io from "socket.io-client";
@@ -82,6 +84,12 @@ class App extends Component {
                         </Route>
                         <Route path="/list">
                             <List />
+                        </Route>
+                        <Route path="/register">
+                            <Register />
+                        </Route>
+                        <Route path="/login">
+                            <Login />
                         </Route>
                         <Route path="/">
                             <Home doc={this.state} updateDoc={this.updateDoc}/>
