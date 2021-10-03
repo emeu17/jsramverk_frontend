@@ -2,6 +2,10 @@
     font-size: 1.2em;
 }
 
+.red-msg {
+    color: red;
+}
+
 .Reg-btn {
     background-image: linear-gradient(to right, #76b852 0%, #8DC26F  51%, #76b852  100%);
 }

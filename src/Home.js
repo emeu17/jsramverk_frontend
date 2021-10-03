@@ -11,21 +11,65 @@ class Home extends Component {
         super(props);
         this.updateDoc = this.updateDoc.bind(this);
         this.newDoc = this.newDoc.bind(this);
-        // this.setToken = this.setToken.bind(this);
+        this.setToken = this.setToken.bind(this);
+        // this.getDocs = this.getDocs.bind(this);
         this.updateInputValue = this.updateInputValue.bind(this);
         this.login = false;
         this.state = {
-            data: []
+            data: [],
+            token: ""
         };
     }
 
     componentDidMount() {
-        // console.log("token: " + this.props.doc.token);
-        fetch(`${baseUrl}/docs`)
+        const token = this.getToken();
+
+        if (token) {
+            fetch(`${baseUrl}/docs`, {
+                method: 'GET',
+                headers: {
+                    'x-access-token': token
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    this.setState({ data });
+                    // console.log(data);
+                    // return data;
+                });
+        }
+    }
+
+    async getDocs(token) {
+        return fetch(`${baseUrl}/docs`, {
+            method: 'GET',
+            headers: {
+                'x-access-token': token
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 this.setState({ data });
+                // console.log(data);
+                // return data;
             });
+    }
+
+    async handleDocs(token) {
+        await this.getDocs(token);
+    }
+
+    getToken() {
+        const tokenString = sessionStorage.getItem('token');
+        const userToken = JSON.parse(tokenString);
+
+        return userToken;
+    }
+
+    setToken(userToken, userEmail) {
+        sessionStorage.setItem('token', JSON.stringify(userToken));
+        sessionStorage.setItem('email', JSON.stringify(userEmail));
+        this.handleDocs(userToken);
     }
 
     updateDoc(docId, doc, cont) {
@@ -46,7 +90,6 @@ class Home extends Component {
     }
 
     updateInputValue(evt) {
-        //console.log("input field updated with "+evt.target.value);
         this.setState({inputfield: evt.target.value});
     }
 
@@ -55,9 +98,15 @@ class Home extends Component {
     // }
 
     render() {
-        const { data } = this.state;
+        const token = this.getToken();
 
-        if (! data.errors) {
+        if (token) {
+            // this.handleDocs(token);
+            const { data } = this.state;
+
+            if (data === undefined || data.errors) {
+                return <Login myData={this.state} setToken={this.setToken} />;
+            }
             return (
                 <div className="Index-page">
                     <h1>Welcome</h1>
@@ -90,7 +139,7 @@ class Home extends Component {
                 </div>
             );
         } else {
-            return <Login myData={this.state} setToken={this.props.setToken} />;
+            return <Login myData={this.state} setToken={this.setToken} />;
         }
     }
 }

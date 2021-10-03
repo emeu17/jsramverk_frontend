@@ -101,7 +101,6 @@ class App extends Component {
                             <Home
                                 doc={this.state}
                                 updateDoc={this.updateDoc}
-                                setToken={this.setToken}
                             />
                         </Route>
                     </Switch>

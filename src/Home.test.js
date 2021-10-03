@@ -22,7 +22,7 @@ afterEach(() => {
 
 it("renders with welcome text", () => {
     act(() => {    render(<Router><Home /></Router>, container);  });
-    expect(container.textContent).toMatch(new RegExp('Welcome'));
+    expect(container.textContent).toMatch(new RegExp('Login'));
 });
 
 // it("renders button for creating new document", () => {
