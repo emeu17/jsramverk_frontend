@@ -30,8 +30,7 @@ class App extends Component {
         this.state = {
             editorHtml: "",
             currDocName: "",
-            docId: "",
-            token: ""
+            docId: ""
         };
     }
 

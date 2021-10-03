@@ -15,7 +15,14 @@ class Editor extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.socketUpdate = this.socketUpdate.bind(this);
         this.updateId = this.updateId.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.setEditorContent = this.setEditorContent.bind(this);
+        this.state = {
+            email: "",
+            messageCont: "",
+            showMessage: false,
+            token: ""
+        };
     }
 
     handleChange(html) {
@@ -34,6 +41,10 @@ class Editor extends Component {
 
 
     componentDidMount() {
+        const token = this.getToken();
+
+        this.setState({token: token});
+
         //if new doc, save it right away and set id to new id
         if (this.props.dataApp.docId === "no-id") {
             //if no document name has been set, return nothing from function
@@ -45,7 +56,8 @@ class Editor extends Component {
             let requestOptions = {
                 method: 'POST',
                 headers: {
-                    'Content-type': 'application/json; charset=UTF-8' // Indicates the content
+                    'x-access-token': token,
+                    'Content-type': 'application/json; charset=UTF-8'
                 },
                 body: JSON.stringify({
                     name: this.props.dataApp.currDocName,
@@ -68,6 +80,13 @@ class Editor extends Component {
         });
     }
 
+    getToken() {
+        const tokenString = sessionStorage.getItem('token');
+        const userToken = JSON.parse(tokenString);
+
+        return userToken;
+    }
+
     setEditorContent(txt) {
         this.props.setEditorContent(txt);
     }
@@ -83,6 +102,45 @@ class Editor extends Component {
         this.props.appSocket.emit("leave", this.props.dataApp.docId);
     }
 
+    async addUser(newAllowedEmail, token) {
+        return fetch(`${baseUrl}/docs/userDocs`, {
+            method: 'POST',
+            headers: {
+                'x-access-token': token,
+                'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+                user: newAllowedEmail,
+                _id: this.props.dataApp.docId
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    this.setState({
+                        messageCont: newAllowedEmail + " added, can now edit document",
+                        showMessage: true
+                    });
+                    return;
+                }
+                this.setState({
+                    messageCont: "Error could not add " + newAllowedEmail,
+                    showMessage: true
+                });
+            });
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault();
+        // const token = this.getToken();
+
+        let newAllowedEmail = this.state.email;
+
+        // const user = await this.addUser(newAllowedEmail, this.state.token);
+        await this.addUser(newAllowedEmail, this.state.token);
+
+        // this.setState({message: user});
+    }
+
     render() {
         //if no document name is added yet, show text from if-statement
         let currDoc = this.props.dataApp.currDocName;
@@ -90,9 +148,26 @@ class Editor extends Component {
         if (currDoc === "") {
             currDoc = "No document selected yet";
         }
+
         return (
             <div>
                 <p>Current doc: <i> { currDoc } </i></p>
+                <form onSubmit={this.handleSubmit}>
+                    <label className="Doc-label">Add email that can edit document:</label>
+                    <input
+                        type="email"
+                        className="Doc-input"
+                        onChange={e => this.setState({email: e.target.value})}
+                    />
+                    <button type="submit" className="Add-user-btn">Add user</button>
+                    { this.state.showMessage &&
+                            <span
+                                className="Message-add"
+                            >
+                                *** Info: {this.state.messageCont} ***
+                            </span>
+                    }
+                </form>
                 <ReactQuill
                     theme="snow"
                     value={this.props.dataApp.editorHtml}

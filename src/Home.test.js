@@ -20,7 +20,7 @@ afterEach(() => {
     container = null;
 });
 
-it("renders with welcome text", () => {
+it("renders with login-text if not logged in", () => {
     act(() => {    render(<Router><Home /></Router>, container);  });
     expect(container.textContent).toMatch(new RegExp('Login'));
 });

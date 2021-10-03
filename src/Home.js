@@ -12,20 +12,21 @@ class Home extends Component {
         this.updateDoc = this.updateDoc.bind(this);
         this.newDoc = this.newDoc.bind(this);
         this.setToken = this.setToken.bind(this);
+        this.getToken = this.getToken.bind(this);
         // this.getDocs = this.getDocs.bind(this);
         this.updateInputValue = this.updateInputValue.bind(this);
         this.login = false;
         this.state = {
-            data: [],
-            token: ""
+            data: []
         };
     }
 
     componentDidMount() {
         const token = this.getToken();
 
+        // console.log("token: " + token);
         if (token) {
-            fetch(`${baseUrl}/docs`, {
+            fetch(`${baseUrl}/docs/userDocs`, {
                 method: 'GET',
                 headers: {
                     'x-access-token': token
@@ -33,15 +34,14 @@ class Home extends Component {
             })
                 .then(response => response.json())
                 .then(data => {
-                    this.setState({ data });
                     // console.log(data);
-                    // return data;
+                    this.setState({ data });
                 });
         }
     }
 
     async getDocs(token) {
-        return fetch(`${baseUrl}/docs`, {
+        return fetch(`${baseUrl}/docs/userDocs`, {
             method: 'GET',
             headers: {
                 'x-access-token': token
@@ -66,9 +66,9 @@ class Home extends Component {
         return userToken;
     }
 
-    setToken(userToken, userEmail) {
+    setToken(userToken) {
         sessionStorage.setItem('token', JSON.stringify(userToken));
-        sessionStorage.setItem('email', JSON.stringify(userEmail));
+
         this.handleDocs(userToken);
     }
 

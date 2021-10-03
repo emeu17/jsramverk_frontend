@@ -2,10 +2,12 @@
     min-height: 200px;
 }
 
-.Save-button {
+.Add-user-btn {
     background-image: linear-gradient(to right, #76b852 0%, #8DC26F  51%, #76b852  100%);
 }
-.Save-button {
+
+.Add-user-btn {
+    display: inline-block;
     margin: 10px;
     padding: 0.5em 2em;
     text-align: center;
@@ -17,15 +19,37 @@
     border-radius: 10px;
 }
 
-.Save-button:hover {
+.Add-user-btn:hover {
     background-position: right center; /* change the direction of the change here */
     color: #fff;
     text-decoration: none;
 }
 
-.Toolbar {
-    text-align: right;
-    padding: 0.2em 2em;
-    border-bottom: 2px solid #000;
-    background-color: #ccc;
+.Doc-input {
+    display: inline;
+    font-size: 1em;
+    line-height: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.2rem;
+    padding: 0.6rem 0.6rem;
+    width: 15rem;
+    margin-bottom: 1.4rem auto;
+}
+
+/*shows green or red if valid/invalid input*/
+.Doc-input:valid {
+    border: 1px solid green;
+}
+
+.Doc-input:invalid {
+    border: 1px solid red;
+}
+
+.Doc-label {
+    padding-right: 1em;
+}
+
+.Message-add {
+    font-style: italic;
+    margin-left: 2em;
 }

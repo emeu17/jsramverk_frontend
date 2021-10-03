@@ -51,7 +51,7 @@ class Login extends Component {
         //if success, save token in sessionStorage
         //else show message why login failed
         if (token) {
-            this.setToken(token, email);
+            this.setToken(token);
         } else {
             this.setState({ showMessage: true });
         }
@@ -70,10 +70,15 @@ class Login extends Component {
                             <p className="red-msg">Login failed: {this.state.messageCont}</p>
                     }
                     <label className="input-label">Email</label>
-                    <input type="text" onChange={e => this.setState({email: e.target.value})} />
+                    <input
+                        type="email"
+                        className="input"
+                        onChange={e => this.setState({email: e.target.value})}
+                    />
                     <label className="input-label">Password</label>
                     <input
                         type="password"
+                        className="input"
                         onChange={e => this.setState({password: e.target.value})}
                     />
                     <div>

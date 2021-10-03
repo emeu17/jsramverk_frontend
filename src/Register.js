@@ -66,10 +66,15 @@ class Register extends Component {
                             <p><i>{this.state.messageCont}</i></p>
                     }
                     <label className="input-label">Email</label>
-                    <input type="text" onChange={e => this.setState({email: e.target.value})} />
+                    <input
+                        type="email"
+                        className="input"
+                        onChange={e => this.setState({email: e.target.value})}
+                    />
                     <label className="input-label">Password</label>
                     <input
                         type="password"
+                        className="input"
                         onChange={e => this.setState({password: e.target.value})}
                     />
                     <div>
