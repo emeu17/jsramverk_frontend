@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import './Register.css';
-import { baseUrl} from "./vars.js";
+import { baseUrl, homepage} from "./vars.js";
 
 class Register extends Component {
     constructor(props) {
@@ -53,7 +53,7 @@ class Register extends Component {
 
         //if success, redirect to homepage
         if (data) {
-            window.location.assign("/");
+            window.location.assign(`${homepage}/`);
         }
     }
 
