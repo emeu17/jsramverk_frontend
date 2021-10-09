@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Home.css';
+import '../Home/Home.css';
 
 class List extends Component {
     constructor(props) {

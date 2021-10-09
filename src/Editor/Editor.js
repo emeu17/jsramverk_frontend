@@ -4,7 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import './Editor.css';
 
-import { baseUrl} from "./vars.js";
+import { baseUrl} from "../vars.js";
 
 class Editor extends Component {
     constructor(props) {

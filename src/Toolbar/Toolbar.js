@@ -3,7 +3,7 @@ import './Toolbar.css';
 import { useLocation } from 'react-router-dom';
 // console.log(location.pathname);
 
-import { baseUrl} from "./vars.js";
+import { baseUrl} from "../vars.js";
 
 const Toolbar = (props) => {
     const location = useLocation();

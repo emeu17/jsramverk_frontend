@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
-import { Link }  from "react-router-dom";
 
 import './Register.css';
-import { baseUrl} from "./vars.js";
+import { baseUrl, homepage} from "../vars.js";
 
-class Login extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             email: "",
             password: "",
-            showMessage: false,
-            messageCont: ""
+            messageCont: "",
+            showMessage: false
         };
     }
 
-    async loginUser(credentials) {
-        return fetch(`${baseUrl}/auth/login`, {
+    async registerUser(credentials) {
+        return fetch(`${baseUrl}/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8'
@@ -28,13 +27,17 @@ class Login extends Component {
             .then(res => {
                 // console.log(res.data.token);
                 if (res.data) {
-                    return res.data.token;
+                    return res.data;
                 }
-                this.setState({messageCont: res.errors.title});
+                //if login fails, retrieve error message and present
+                this.setState({
+                    messageCont: res.errors.title,
+                    showMessage: true
+                });
             });
     }
 
-    //handle what happens when user press "Login"
+    //handle what happens when user press "Register"
     async handleSubmit(e) {
         e.preventDefault();
         // get email and password from fields
@@ -42,32 +45,25 @@ class Login extends Component {
 
         let password = this.state.password;
 
-        //try logging in and getting token
-        const token = await this.loginUser({
+        //try registering
+        const data = await this.registerUser({
             email: email,
             password: password
         });
 
-        //if success, save token in sessionStorage
-        //else show message why login failed
-        if (token) {
-            this.setToken(token);
-        } else {
-            this.setState({ showMessage: true });
+        //if success, redirect to homepage
+        if (data) {
+            window.location.assign(`${homepage}/`);
         }
-    }
-
-    setToken(token) {
-        this.props.setToken(token);
     }
 
     render() {
         return (
             <div className="Index-page">
-                <h1>Login</h1>
+                <h1>Register new user</h1>
                 <form onSubmit={this.handleSubmit}>
                     { this.state.showMessage &&
-                            <p className="red-msg">Login failed: {this.state.messageCont}</p>
+                            <p><i>{this.state.messageCont}</i></p>
                     }
                     <label className="input-label">Email</label>
                     <input
@@ -82,15 +78,12 @@ class Login extends Component {
                         onChange={e => this.setState({password: e.target.value})}
                     />
                     <div>
-                        <button type="submit" className="Reg-btn">Login</button>
+                        <button type="submit" className="Reg-btn">Register</button>
                     </div>
                 </form>
-                <Link to="/register">
-                    Register new user
-                </Link>
             </div>
         );
     }
 }
 
-export default Login;
+export default Register;

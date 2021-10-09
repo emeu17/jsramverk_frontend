@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
+import { Link }  from "react-router-dom";
 
-import './Register.css';
-import { baseUrl, homepage} from "./vars.js";
+import '../Register/Register.css';
+import { baseUrl} from "../vars.js";
 
-class Register extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             email: "",
             password: "",
-            messageCont: "",
-            showMessage: false
+            showMessage: false,
+            messageCont: ""
         };
     }
 
-    async registerUser(credentials) {
-        return fetch(`${baseUrl}/auth/register`, {
+    async loginUser(credentials) {
+        return fetch(`${baseUrl}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8'
@@ -27,17 +28,13 @@ class Register extends Component {
             .then(res => {
                 // console.log(res.data.token);
                 if (res.data) {
-                    return res.data;
+                    return res.data.token;
                 }
-                //if login fails, retrieve error message and present
-                this.setState({
-                    messageCont: res.errors.title,
-                    showMessage: true
-                });
+                this.setState({messageCont: res.errors.title});
             });
     }
 
-    //handle what happens when user press "Register"
+    //handle what happens when user press "Login"
     async handleSubmit(e) {
         e.preventDefault();
         // get email and password from fields
@@ -45,25 +42,32 @@ class Register extends Component {
 
         let password = this.state.password;
 
-        //try registering
-        const data = await this.registerUser({
+        //try logging in and getting token
+        const token = await this.loginUser({
             email: email,
             password: password
         });
 
-        //if success, redirect to homepage
-        if (data) {
-            window.location.assign(`${homepage}/`);
+        //if success, save token in sessionStorage
+        //else show message why login failed
+        if (token) {
+            this.setToken(token);
+        } else {
+            this.setState({ showMessage: true });
         }
+    }
+
+    setToken(token) {
+        this.props.setToken(token);
     }
 
     render() {
         return (
             <div className="Index-page">
-                <h1>Register new user</h1>
+                <h1>Login</h1>
                 <form onSubmit={this.handleSubmit}>
                     { this.state.showMessage &&
-                            <p><i>{this.state.messageCont}</i></p>
+                            <p className="red-msg">Login failed: {this.state.messageCont}</p>
                     }
                     <label className="input-label">Email</label>
                     <input
@@ -78,12 +82,15 @@ class Register extends Component {
                         onChange={e => this.setState({password: e.target.value})}
                     />
                     <div>
-                        <button type="submit" className="Reg-btn">Register</button>
+                        <button type="submit" className="Reg-btn">Login</button>
                     </div>
                 </form>
+                <Link to="/register">
+                    Register new user
+                </Link>
             </div>
         );
     }
 }
 
-export default Register;
+export default Login;

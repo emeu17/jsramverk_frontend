@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Link }  from "react-router-dom";
 
 import './Home.css';
-import { baseUrl} from "./vars.js";
+import { baseUrl} from "../vars.js";
 
-import Login from './Login';
+import Login from '../Login/Login';
 
 class Home extends Component {
     constructor(props) {

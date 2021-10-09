@@ -3,18 +3,19 @@ import { BrowserRouter as Router, Switch, Link, Route } from 'react-router-dom';
 
 import logo from './notepad.png';
 import './App.css';
-import Editor from './Editor';
-import Toolbar from './Toolbar';
-import Home from './Home';
-import List from './List';
-import Register from './Register';
-import Login from './Login';
+import Editor from '../Editor/Editor';
+import Toolbar from '../Toolbar/Toolbar';
+import Home from '../Home/Home';
+import List from '../List/List';
+import Register from '../Register/Register';
+import Login from '../Login/Login';
+import UserInfo from '../UserInfo/UserInfo';
 
 import socketIOClient from "socket.io-client";
 // import io from "socket.io-client";
 // import socketio from "socket.io-client";
-// const ENDPOINT = "http://127.0.0.1:1337";
-const ENDPOINT = "https://jsramverk-editor-emeu17.azurewebsites.net/";
+const ENDPOINT = "http://127.0.0.1:1337";
+// const ENDPOINT = "https://jsramverk-editor-emeu17.azurewebsites.net/";
 
 class App extends Component {
     //App contains editors text saved as state variable
@@ -70,6 +71,7 @@ class App extends Component {
                         <Link className="Links" to="/">Home</Link>
                         <Link className="Links" to ="/editor">Editor</Link>
                         <Link className="Links" to ="/list">List documents</Link>
+                        <Link className="Links" to ="/userinfo">User information</Link>
                     </div>
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo" />
@@ -95,6 +97,9 @@ class App extends Component {
                         </Route>
                         <Route path="/login">
                             <Login />
+                        </Route>
+                        <Route path="/userinfo">
+                            <UserInfo />
                         </Route>
                         <Route path="/">
                             <Home
