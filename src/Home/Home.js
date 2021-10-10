@@ -126,10 +126,17 @@ class Home extends Component {
         if (token) {
             const { data } = this.state;
 
-            if (!data || data === undefined || data.errors) {
+            if (!data) {
+                return (
+                    <p>Loading...</p>
+                );
+            }
+
+            if (data === undefined || data.errors) {
                 return <Login myData={this.state} setToken={this.setToken} />;
             }
-            if (data.doc_owner === undefined || data.allowed_docs === undefined ) {
+
+            if ( data.doc_owner === undefined || data.allowed_docs === undefined ) {
                 return (
                     <p>Loading...</p>
                 );

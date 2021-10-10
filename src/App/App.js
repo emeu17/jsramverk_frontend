@@ -12,10 +12,8 @@ import Login from '../Login/Login';
 import UserInfo from '../UserInfo/UserInfo';
 
 import socketIOClient from "socket.io-client";
-// import io from "socket.io-client";
-// import socketio from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:1337";
-// const ENDPOINT = "https://jsramverk-editor-emeu17.azurewebsites.net/";
+// const ENDPOINT = "http://127.0.0.1:1337";
+const ENDPOINT = "https://jsramverk-editor-emeu17.azurewebsites.net/";
 
 class App extends Component {
     //App contains editors text saved as state variable

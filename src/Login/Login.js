@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link }  from "react-router-dom";
 
 import '../Register/Register.css';
-import { baseUrl} from "../vars.js";
+import { baseUrl, homepage} from "../vars.js";
 
 class Login extends Component {
     constructor(props) {
@@ -58,6 +58,7 @@ class Login extends Component {
         if (token) {
             this.setToken(token);
             sessionStorage.setItem('email', JSON.stringify(email));
+            window.location.assign(`${homepage}/`);
         } else {
             this.setState({ showMessage: true });
         }

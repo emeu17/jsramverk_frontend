@@ -59,7 +59,6 @@ class Register extends Component {
 
         //if success, redirect to homepage
         if (data) {
-            console.log("success!");
             window.location.assign(`${homepage}/`);
         }
     }
