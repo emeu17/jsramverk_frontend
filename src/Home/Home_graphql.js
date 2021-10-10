@@ -36,6 +36,7 @@ class Home extends Component {
     async getDocs(token) {
         const userEmail = this.getEmail();
 
+        console.log("email: " + userEmail);
         return fetch(`${baseUrl}/graphql`, {
             method: 'POST',
             headers: {
@@ -46,7 +47,6 @@ class Home extends Component {
                 query: `{
                     user (email: "${userEmail}") {
                         email,
-                        _id,
                         doc_owner {
                             name, _id, content
                         },
@@ -66,6 +66,8 @@ class Home extends Component {
                     if (!this.isScreenMounted.current) {
                         return;
                     }
+                    console.log("result:");
+                    console.log(res.data.user);
                     this.setState({ data: res.data.user });
                 }
             });
@@ -124,20 +126,18 @@ class Home extends Component {
         const token = this.getToken();
 
         if (token) {
+            // this.handleDocs(token);
             const { data } = this.state;
 
-            if (!data || data === undefined || data.errors) {
+            console.log("data");
+            console.log(data.email);
+
+            if (data === undefined || data.errors) {
                 return <Login myData={this.state} setToken={this.setToken} />;
-            }
-            if (data.doc_owner === undefined || data.allowed_docs === undefined ) {
-                return (
-                    <p>Loading...</p>
-                );
             }
             return (
                 <div className="Index-page">
                     <h1>Welcome</h1>
-                    <p className="Log-info">Logged in as: {data.email} </p>
                     <form>
                         <input
                             type="text" id="new"
@@ -150,34 +150,23 @@ class Home extends Component {
                         </Link>
                     </form>
                     <p><u>or update an existing document:</u></p>
-                    <div key={data.email}>
-                        <p><b> Owns documents: </b></p>
-                        { data.doc_owner.length ? data.doc_owner.map(doc =>
-                            <div key={doc._id}>
-                                <i> {doc.name} </i>
-                                <Link
-                                    to="/editor"
-                                    className="Edit-link"
-                                    onClick={() =>
-                                        this.updateDoc(doc._id, doc.name, doc.content)}>
-                                        &#9998;
-                                </Link>
-                            </div>
-                        ) : "owns no documents"}
-                        <p><b> Can edit documents: </b></p>
-                        { data.allowed_docs.length ? data.allowed_docs.map(doc =>
-                            <div key={doc.name}>
-                                <i> {doc.name} </i>
-                                <Link
-                                    to="/editor"
-                                    className="Edit-link"
-                                    onClick={() =>
-                                        this.updateDoc(doc._id, doc.name, doc.content)}>
-                                        &#9998;
-                                </Link>
-                            </div>
-                        ) : "has no allowed documents"}
-                    </div>
+                    {data.map(user =>
+                        <div key={user.email}>
+                            <p>Owns document:</p>
+                            { user.doc_owner.length ? user.doc_owner.map(doc =>
+                                <div key={doc.name}>
+                                    <i> {doc.name} </i>
+                                    <Link
+                                        to="/editor"
+                                        className="Edit-link"
+                                        onClick={() =>
+                                            this.updateDoc(doc._id, doc.name, doc.content)}>
+                                            &#9998;
+                                    </Link>
+                                </div>
+                            ) : "none"}
+                        </div>
+                    )}
                 </div>
             );
         } else {

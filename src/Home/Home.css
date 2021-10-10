@@ -1,10 +1,15 @@
 .Index-page {
     font-size: 1.2em;
+    margin-bottom: 3em;
 }
 
 .Edit-link {
     text-decoration: none;
     padding-left: 0.5em;
+}
+
+.Log-info {
+    color: #00b33c;
 }
 
 .New-btn {

@@ -6,6 +6,7 @@ import { baseUrl, homepage} from "../vars.js";
 class Register extends Component {
     constructor(props) {
         super(props);
+        this.isScreenMounted = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             email: "",
@@ -25,6 +26,9 @@ class Register extends Component {
         })
             .then(response => response.json())
             .then(res => {
+                if (!this.isScreenMounted.current) {
+                    return;
+                }
                 // console.log(res.data.token);
                 if (res.data) {
                     return res.data;
@@ -41,6 +45,8 @@ class Register extends Component {
     async handleSubmit(e) {
         e.preventDefault();
         // get email and password from fields
+        this.isScreenMounted.current = true;
+        console.log("handle submit");
         let email = this.state.email;
 
         let password = this.state.password;
@@ -53,8 +59,13 @@ class Register extends Component {
 
         //if success, redirect to homepage
         if (data) {
+            console.log("success!");
             window.location.assign(`${homepage}/`);
         }
+    }
+
+    componentWillUnmount() {
+        this.isScreenMounted.current = false;
     }
 
     render() {

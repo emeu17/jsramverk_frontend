@@ -7,6 +7,7 @@ import { baseUrl} from "../vars.js";
 class Login extends Component {
     constructor(props) {
         super(props);
+        this.isScreenMounted = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             email: "",
@@ -17,6 +18,7 @@ class Login extends Component {
     }
 
     async loginUser(credentials) {
+        this.isScreenMounted.current = true;
         return fetch(`${baseUrl}/auth/login`, {
             method: 'POST',
             headers: {
@@ -26,6 +28,9 @@ class Login extends Component {
         })
             .then(response => response.json())
             .then(res => {
+                if (!this.isScreenMounted.current) {
+                    return;
+                }
                 // console.log(res.data.token);
                 if (res.data) {
                     return res.data.token;
@@ -52,6 +57,7 @@ class Login extends Component {
         //else show message why login failed
         if (token) {
             this.setToken(token);
+            sessionStorage.setItem('email', JSON.stringify(email));
         } else {
             this.setState({ showMessage: true });
         }
@@ -59,6 +65,10 @@ class Login extends Component {
 
     setToken(token) {
         this.props.setToken(token);
+    }
+
+    componentWillUnmount() {
+        this.isScreenMounted.current = false;
     }
 
     render() {

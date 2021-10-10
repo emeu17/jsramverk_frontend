@@ -36,38 +36,20 @@ class Home extends Component {
     async getDocs(token) {
         const userEmail = this.getEmail();
 
-        return fetch(`${baseUrl}/graphql`, {
-            method: 'POST',
+        console.log("email: " + userEmail);
+        return fetch(`${baseUrl}/docs/userDocs`, {
+            method: 'GET',
             headers: {
-                'x-access-token': token,
-                'Content-type': 'application/json; charset=UTF-8'
-            },
-            body: JSON.stringify({
-                query: `{
-                    user (email: "${userEmail}") {
-                        email,
-                        _id,
-                        doc_owner {
-                            name, _id, content
-                        },
-                        allowed_docs {
-                            name, _id, content
-                        }
-                    }
-                }`
-            })
+                'x-access-token': token
+            }
         })
-            .then(res => res.json())
-            .then(res => {
-                if (!res.data) {
-                    this.setState({ data: undefined });
-                } else {
-                    // console.log(res.data.users);
-                    if (!this.isScreenMounted.current) {
-                        return;
-                    }
-                    this.setState({ data: res.data.user });
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data);
+                if (!this.isScreenMounted.current) {
+                    return;
                 }
+                this.setState({ data });
             });
     }
 
@@ -124,20 +106,18 @@ class Home extends Component {
         const token = this.getToken();
 
         if (token) {
+            // this.handleDocs(token);
             const { data } = this.state;
 
-            if (!data || data === undefined || data.errors) {
+            console.log("data");
+            console.log(data);
+
+            if (data === undefined || data.errors) {
                 return <Login myData={this.state} setToken={this.setToken} />;
-            }
-            if (data.doc_owner === undefined || data.allowed_docs === undefined ) {
-                return (
-                    <p>Loading...</p>
-                );
             }
             return (
                 <div className="Index-page">
                     <h1>Welcome</h1>
-                    <p className="Log-info">Logged in as: {data.email} </p>
                     <form>
                         <input
                             type="text" id="new"
@@ -150,11 +130,10 @@ class Home extends Component {
                         </Link>
                     </form>
                     <p><u>or update an existing document:</u></p>
-                    <div key={data.email}>
-                        <p><b> Owns documents: </b></p>
-                        { data.doc_owner.length ? data.doc_owner.map(doc =>
-                            <div key={doc._id}>
-                                <i> {doc.name} </i>
+                    {data.map(doc =>
+                        <div key={doc._id}>
+                            <p>
+                                <i>{doc.name}</i>
                                 <Link
                                     to="/editor"
                                     className="Edit-link"
@@ -162,22 +141,9 @@ class Home extends Component {
                                         this.updateDoc(doc._id, doc.name, doc.content)}>
                                         &#9998;
                                 </Link>
-                            </div>
-                        ) : "owns no documents"}
-                        <p><b> Can edit documents: </b></p>
-                        { data.allowed_docs.length ? data.allowed_docs.map(doc =>
-                            <div key={doc.name}>
-                                <i> {doc.name} </i>
-                                <Link
-                                    to="/editor"
-                                    className="Edit-link"
-                                    onClick={() =>
-                                        this.updateDoc(doc._id, doc.name, doc.content)}>
-                                        &#9998;
-                                </Link>
-                            </div>
-                        ) : "has no allowed documents"}
-                    </div>
+                            </p>
+                        </div>
+                    )}
                 </div>
             );
         } else {

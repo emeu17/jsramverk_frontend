@@ -10,8 +10,7 @@ class Editor extends Component {
     constructor(props) {
         super(props);
         // this.mytext = this.props.dataApp.editorHtml;
-        this.quillRef = null;
-        this.reactQuillRef = null;
+        this.isScreenMounted = React.createRef();
         this.handleChange = this.handleChange.bind(this);
         this.socketUpdate = this.socketUpdate.bind(this);
         this.updateId = this.updateId.bind(this);
@@ -68,7 +67,12 @@ class Editor extends Component {
             // fetch('http://localhost:1337/docs', requestOptions)
             fetch(`${baseUrl}/docs`, requestOptions)
                 .then(response => response.json())
-                .then(data => this.updateId(data.data.msg));
+                .then(data => {
+                    if (!this.isScreenMounted.current) {
+                        return;
+                    }
+                    this.updateId(data.data.msg);
+                });
         }
         //connect to correct room
         this.props.appSocket.emit("create", this.props.dataApp.docId);
@@ -100,6 +104,7 @@ class Editor extends Component {
     //leave room when changing view
     componentWillUnmount() {
         this.props.appSocket.emit("leave", this.props.dataApp.docId);
+        this.isScreenMounted.current = false;
     }
 
     async addUser(newAllowedEmail, token) {
