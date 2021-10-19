@@ -14,6 +14,7 @@ class Editor extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.socketUpdate = this.socketUpdate.bind(this);
         this.updateId = this.updateId.bind(this);
+        this.sendMail = this.sendMail.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setEditorContent = this.setEditorContent.bind(this);
         this.state = {
@@ -146,6 +147,48 @@ class Editor extends Component {
         // this.setState({message: user});
     }
 
+    sendMail(e) {
+        e.preventDefault();
+        let newAllowedEmail = this.state.email;
+
+        if (newAllowedEmail == "") {
+            this.setState({
+                messageCont: "Not a valid email",
+                showMessage: true
+            });
+            return;
+        }
+
+        let token = this.state.token;
+
+        fetch(`${baseUrl}/mail`, {
+            method: 'POST',
+            headers: {
+                'x-access-token': token,
+                'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+                newUser: newAllowedEmail,
+                _id: this.props.dataApp.docId,
+                docName: this.props.dataApp.currDocName
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    this.setState({
+                        messageCont: "Email sent to "
+        + newAllowedEmail + ". Can now edit document",
+                        showMessage: true
+                    });
+                    return;
+                }
+                this.setState({
+                    messageCont: "Error could not send email/add " + newAllowedEmail,
+                    showMessage: true
+                });
+            });
+    }
+
     render() {
         //if no document name is added yet, show text from if-statement
         let currDoc = this.props.dataApp.currDocName;
@@ -157,14 +200,23 @@ class Editor extends Component {
         return (
             <div>
                 <p>Current doc: <i> { currDoc } </i></p>
-                <form onSubmit={this.handleSubmit}>
+                <form>
                     <label className="Doc-label">Add email that can edit document:</label>
                     <input
                         type="email"
                         className="Doc-input"
-                        onChange={e => this.setState({email: e.target.value})}
+                        onChange={e => {
+                            if (e.target.value.includes('@')) {
+                                this.setState({email: e.target.value});
+                            } else {
+                                this.setState({email: ''});
+                            }
+                        }}
                     />
-                    <button type="submit" className="Add-user-btn">Add user</button>
+                    <button type="submit" className="Add-user-btn" onClick={this.handleSubmit}>
+                        Add user
+                    </button>
+                    <button className="Add-user-btn" onClick={this.sendMail}>Send invite</button>
                     { this.state.showMessage &&
                             <span
                                 className="Message-add"

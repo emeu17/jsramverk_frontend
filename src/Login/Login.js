@@ -76,6 +76,10 @@ class Login extends Component {
         return (
             <div className="Index-page">
                 <h1>Login</h1>
+                <span>or: </span>
+                <Link to="/register">
+                    Register new user
+                </Link>
                 <form onSubmit={this.handleSubmit}>
                     { this.state.showMessage &&
                             <p className="red-msg">Login failed: {this.state.messageCont}</p>
@@ -96,9 +100,6 @@ class Login extends Component {
                         <button type="submit" className="Reg-btn">Login</button>
                     </div>
                 </form>
-                <Link to="/register">
-                    Register new user
-                </Link>
             </div>
         );
     }
