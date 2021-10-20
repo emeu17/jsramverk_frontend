@@ -24,6 +24,24 @@ Adding tests using Jest. Three functional tests of use-cases for my application:
 
 3. When the user is on the /editor-page the "Save"-link should be rendered in the navbar/toolbar. But the save-link should not appear when the user is on the /list-page. *Toolbar.test.js*
 
+## Kmom04
+
+Added sockets, creating the possibility to edit the same document from multiple clients.
+
+## Kmom05
+
+Added authentication - registering and logging in users. Need to login to see documents.
+
+## Kmom06
+
+GraphQL added backend. When logged in the users documents and the users information is retrieved using GraphQL.
+
+## Project
+
+When editing a document, its possible to save/print a copy of the document. It's also possible
+to send an invite to an email to edit a document. The specified email is then added as an allowed user (editor) of
+the document in question and an email is sent backend.
+Mailgun is used backend in order to send emails. 
 
 
 # Getting Started with Create React App
